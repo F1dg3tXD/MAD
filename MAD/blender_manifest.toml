@@ -3,7 +3,7 @@ schema_version = "1.0.0"
 # Example of manifest file for a Blender extension
 # Change the values according to your extension
 id = "MAD"
-version = "0.1.5"
+version = "0.1.6"
 name = "MAD (Microphone Audio Driver)"
 tagline = "Use your Microphone as an Animation Driver in Blender"
 maintainer = "F1dg3t <f1dg3t.rah@gmail.com>"
@@ -17,7 +17,7 @@ website = "https://github.com/F1dg3tXD/MAD"
 # https://docs.blender.org/manual/en/dev/extensions/tags.html
 tags = ["Rigging", "Animation"]
 
-blender_version_min = "4.2.0"
+blender_version_min = "5.0.0"
 # Optional: maximum supported Blender version
 # blender_version_max = "5.1.0"
 
@@ -32,7 +32,7 @@ license = [
 # ]
 
 # Optional: list of supported platforms. If omitted, the extension will be available in all operating systems.
-# platforms = ["windows-amd64", "macos-arm64", "linux-x86_64"]
+platforms = ["windows-amd64", "windows-arm64"]
 # Other supported platforms: "windows-arm64", "macos-x86_64"
 
 # Optional: bundle 3rd party Python modules.

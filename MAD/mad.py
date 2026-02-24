@@ -13,14 +13,42 @@ current_volume = 0.0
 stream = None
 should_run = False
 
+# Device cache
+DEVICE_ITEMS = []
+DEVICE_INDEX_MAP = {}
+
+def refresh_microphones():
+    global DEVICE_ITEMS, DEVICE_INDEX_MAP
+
+    DEVICE_ITEMS.clear()
+    DEVICE_INDEX_MAP.clear()
+
+    try:
+        devices = sd.query_devices()
+        for i, device in enumerate(devices):
+            if device["max_input_channels"] > 0:
+                name = device["name"]
+
+                # Filter out corrupted/invalid names
+                if not name or len(name) < 3:
+                    continue
+                if any(ord(c) < 32 for c in name):
+                    continue
+
+                key = str(i)
+                DEVICE_ITEMS.append((key, name, ""))
+                DEVICE_INDEX_MAP[key] = i
+
+    except Exception as e:
+        print("MAD: Failed to refresh microphones:", e)
+
+    # Fallback if nothing valid found
+    if not DEVICE_ITEMS:
+        DEVICE_ITEMS.append(("0", "No Input Devices Found", ""))
+
 # UI Properties
 def get_microphone_items(self, context):
-    items = []
-    for i, device in enumerate(sd.query_devices()):
-        if device["max_input_channels"] > 0:
-            label = f"{i}:{device['name']}"
-            items.append((label, device["name"], ""))
-    return items
+    return DEVICE_ITEMS
 
 class AudioRigSettings(bpy.types.PropertyGroup):
     mic_list: bpy.props.EnumProperty(
@@ -166,6 +194,7 @@ class AUDIO_PT_MicDriverPanel(bpy.types.Panel):
         global should_run, current_volume
 
         layout.prop(s, "mic_list")
+        layout.operator("wm.audio_refresh_mics", icon='FILE_REFRESH')
         layout.prop(s, "object_ref")
         if s.object_ref and s.object_ref.type == 'ARMATURE':
             layout.prop(s, "bone_name")
@@ -189,6 +218,15 @@ class AUDIO_PT_MicDriverPanel(bpy.types.Panel):
             )
         else:
             layout.label(text="Audio Driver: Inactive", icon='PAUSE')
+
+class AUDIO_OT_RefreshMics(bpy.types.Operator):
+    bl_idname = "wm.audio_refresh_mics"
+    bl_label = "Refresh Devices"
+    
+    def execute(self, context):
+        refresh_microphones()
+        self.report({'INFO'}, "Microphone list refreshed")
+        return {'FINISHED'}
 
 # --- Add a property to hold the audio level for UI updates ---
 def update_audio_level(self, context):
@@ -215,6 +253,7 @@ classes = (
 
 def register():
     ensure_audio_level_property()
+    refresh_microphones()
     for cls in classes:
         bpy.utils.register_class(cls)
     bpy.types.Scene.audio_rig_settings = bpy.props.PointerProperty(type=AudioRigSettings)
