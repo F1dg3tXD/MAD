@@ -1,9 +1,7 @@
 schema_version = "1.0.0"
 
-# Example of manifest file for a Blender extension
-# Change the values according to your extension
 id = "MAD"
-version = "0.1.6"
+version = "0.1.7"
 name = "MAD (Microphone Audio Driver)"
 tagline = "Use your Microphone as an Animation Driver in Blender"
 maintainer = "F1dg3t <f1dg3t.rah@gmail.com>"
@@ -32,15 +30,33 @@ license = [
 # ]
 
 # Optional: list of supported platforms. If omitted, the extension will be available in all operating systems.
-platforms = ["windows-x64", "windows-arm64"]
-# Other supported platforms: "windows-arm64", "macos-x86_64"
+# macOS is not listed here because it ships as a separate package (MAD_OSX) with
+# its own macOS specific wheels.
+platforms = ["windows-x64", "windows-arm64", "linux-x64"]
 
 # Optional: bundle 3rd party Python modules.
 # https://docs.blender.org/manual/en/dev/extensions/python_wheels.html
+# Blender installs the wheels that match its own Python version, so the wheels
+# for every supported Python version have to be listed here.
+# * CPython 3.11 -> Blender 5.0
+# * CPython 3.13 -> Blender 5.1 and 5.2
+# * CPython 3.14 -> Blender builds that ship 3.14
+# sounddevice has no Linux binary wheel, the pure Python one is used there and
+# PortAudio itself is loaded from the system library (see MAD/mad.py).
 wheels = [
-  "./wheels/cffi-1.17.1-cp311-cp311-win_amd64.whl",
-  "./wheels/pycparser-2.22-py3-none-any.whl",
-  "./wheels/sounddevice-0.5.1-py3-none-win_amd64.whl"
+  "./wheels/pycparser-3.0-py3-none-any.whl",
+  "./wheels/sounddevice-0.5.6-py3-none-win_amd64.whl",
+  "./wheels/sounddevice-0.5.6-py3-none-win_arm64.whl",
+  "./wheels/sounddevice-0.5.6-py3-none-any.whl",
+  "./wheels/cffi-2.1.1-cp311-cp311-win_amd64.whl",
+  "./wheels/cffi-2.1.1-cp313-cp313-win_amd64.whl",
+  "./wheels/cffi-2.1.1-cp314-cp314-win_amd64.whl",
+  "./wheels/cffi-2.1.1-cp311-cp311-win_arm64.whl",
+  "./wheels/cffi-2.1.1-cp313-cp313-win_arm64.whl",
+  "./wheels/cffi-2.1.1-cp314-cp314-win_arm64.whl",
+  "./wheels/cffi-2.1.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+  "./wheels/cffi-2.1.1-cp313-cp313-manylinux2014_x86_64.manylinux_2_17_x86_64.whl",
+  "./wheels/cffi-2.1.1-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.whl"
 ]
 
 # Optional: add-ons can list which resources they will require:
