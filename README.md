@@ -47,7 +47,7 @@ Follow these steps to fully remove the MAD addon from Blender.
 
 ---
 
-## ✅ 1. Remove the Addon via Blender UI
+## 1. Remove the Addon via Blender UI
 
 1. Open **Blender**.
 2. Go to **Edit → Preferences**.
@@ -58,7 +58,7 @@ Follow these steps to fully remove the MAD addon from Blender.
 
 ---
 
-## ✅ 2. Manually Delete Leftover Addon Files (if necessary)
+## 2. Manually Delete Leftover Addon Files (if necessary)
 
 1. Open **Finder**.
 2. Press `Cmd + Shift + G` to open the **Go to Folder** dialog.
@@ -69,7 +69,7 @@ Follow these steps to fully remove the MAD addon from Blender.
 
 ---
 
-## ✅ 3. (Optional) Remove Installed Python Dependencies
+## 3. (Optional) Remove Installed Python Dependencies
 
 v0.1.7 ships its own wheels, so nothing needs to be installed. This step is only needed if
 you previously installed `sounddevice`/`cffi` yourself (for example with the old
@@ -95,7 +95,7 @@ Use the interpreter path from step 2. The `python3.11` in the middle of the path
 on your Blender version (3.11 for Blender 5.0, 3.13 for Blender 5.1/5.2), so copy the path
 exactly as printed.
 
-# ✅ Installing v0.1.7 OSX
+# Installing v0.1.7 OSX
 MAD should now be fully uninstalled from your system.
 
 - Go get the latest version from the [releases tab](https://github.com/F1dg3tXD/MAD/releases).
